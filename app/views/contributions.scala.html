@@ -1,0 +1,177 @@
+@(title: String, contributionPageInfo: ContributionPageInfo, pageSize: Int, totalPageNumbers: Int)(implicit request: RequestHeader)
+
+<!DOCTYPE html>
+<html lang="en">
+
+    @header(title)
+
+
+<body class="g-sidenav-show  bg-gray-200">
+    @sideNavbar(MenuActive(isContributionActive = true), contributionPageInfo.loggedInUserRole)
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+        @topNavbar(title, contributionPageInfo.loggedInUserName)
+        <div class="col-12">
+
+            <div class="card my-4">
+
+
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Contributions</h6>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-outer">
+                    <button type="button" class="btn btn-default bg-gradient-success close-modal-btn" data-bs-toggle="modal" data-bs-target="#editModal">Add Contribution</button>
+                </div>
+                <div class="col-md-4">
+                    <!-- Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" >
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title font-weight-normal" id="editModal">Add Contribution</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <form method="GET" action="@routes.HomeController.addContribution(null,null,null,null,null)">
+
+                                <div class="modal-body">
+                                    <div class="col-md-12 disp-inline update-second form-group" style="margin-top: 20px;">
+                                        <label class="col-md-2 control-label">Name</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="contributionName" value=""/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 disp-inline update-second form-group" style="margin-top: 20px;">
+                                        <label class="col-md-2 control-label">URL</label>
+                                        <div class="col-md-10">
+                                            <input type="text" name="contributionUrl" value=""/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 disp-inline">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-10">
+                                            <select name="status">
+                                                <option value="Completed">Completed</option>
+                                                <option value="PendingForManager">PendingForManager</option>
+                                                <option value="PendingForUser">PendingForUser</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 disp-inline">
+                                        <label class="col-md-2 control-label">Type</label>
+                                        <div class="col-md-10">
+                                            <select name="contributionType">
+                                                <option value="Blog">Blog</option>
+                                                <option value="TechHubTemplate">TechHubTemplate</option>
+                                                <option value="Certification">Certification</option>
+                                                <option value="OpenSource">OpenSource</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 disp-inline form-group">
+                                        <label class="col-md-2 control-label">Remarks</label>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <input type="text" name="remark" value=""/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">CLOSE</button>
+                                    <button type="submit" class="btn bg-gradient-primary" onclick="location.href='';">ADD</button>
+                                </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Contributions</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Type</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Created On</th>
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(data <- contributionPageInfo.contributionDetail) {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">@data.contributionName</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0"></p>
+                                        <p class="text-xs text-secondary mb-0">@data.status</p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="badge badge-sm bg-gradient-success">@data.contributionType</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">@data.createdOn</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="@if(contributionPageInfo.pageNumber == 0) {javascript:;} else {
+                            @routes.HomeController.contributions(contributionPageInfo.pageNumber - 1)
+                        } " aria-label="Previous">
+                            <span class="material-icons">
+                                keyboard_arrow_left
+                            </span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+
+                        <a class="page-link" href="@if(contributionPageInfo.pageNumber == totalPageNumbers-1) {javascript:;} else {
+                            @routes.HomeController.contributions(contributionPageInfo.pageNumber + 1)
+                        } " aria-label="Next">
+                            <span class="material-icons">
+                                keyboard_arrow_right
+                            </span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            @footer()
+
+        </div>
+
+    </main>
+    @javascripts()
+</body>
+</html>

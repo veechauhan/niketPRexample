@@ -1,0 +1,79 @@
+@(title: String)(implicit request: RequestHeader)
+<!DOCTYPE html>
+<html lang="en">
+
+    @header(title)
+
+        @randomBackgroundImage() = @{
+            import scala.util.Random
+            val listOfImage = Seq(
+                "img/illustrations/illustration-signup.jpg",
+                "img/illustrations/illustration-signin.jpg",
+                "img/illustrations/illustration-lock.jpg",
+                "img/illustrations/illustration-reset.jpg"
+            )
+            Random.shuffle(listOfImage).head
+        }
+
+        <body class="">
+
+            <main class="main-content  mt-0">
+                <section>
+                    <div class="page-header min-vh-100">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+                                    <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('@routes.Assets.versioned(randomBackgroundImage())');
+                                        background-size: cover;">
+                            </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                                    <div class="card card-plain">
+
+                                        <div class="card-header">
+                                            <h4 class="font-weight-bolder">Studio Manager Login</h4>
+                                            <p class="mb-0">Sign in with google</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="text-center">
+
+                                                <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+                                                <meta name="google-signin-client_id" content="311802510749-8qcec5bh78q6tfgd903j7eak4q20emnq.apps.googleusercontent.com">
+                                                <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+                                                <script>
+                                                function onSuccess(googleUser) {
+                                                    const authToken = googleUser.getAuthResponse(true).id_token
+                                                    window.location.href = '/signIn?authToken=' + authToken
+                                                }
+
+                                                function onFailure(error) {
+                                                    console.log(error);
+                                                }
+
+                                                function renderButton() {
+                                                    gapi.signin2.render('google-sign-on', {
+                                                        'scope': 'profile email',
+                                                        'width': 240,
+                                                        'height': 50,
+                                                        'longtitle': true,
+                                                        'theme': 'dark',
+                                                        'onsuccess': onSuccess,
+                                                        'onfailure': onFailure
+                                                    });
+                                                }
+                                        </script>
+                                                <div type="button" id="google-sign-on" href="@routes.HomeController.index"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            @javascripts()
+</body>
+</html>

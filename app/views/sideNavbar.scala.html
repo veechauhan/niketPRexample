@@ -1,0 +1,67 @@
+@import models.UserRole.UserRole
+
+@(menuActive: MenuActive, userRole: UserRole)
+
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-dashboard">
+        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href="@routes.HomeController.index">
+            <img src="@routes.Assets.versioned("img/logos/pngegg.png")" class="navbar-brand-img h-100" alt="main_logo">
+            <span class="ms-1 font-weight-bold text-white">Studio Manager</span>
+        </a>
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link text-white @if(menuActive.isDashboardActive) {active bg-gradient-primary}" href="@routes.HomeController.index">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">dashboard</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if(menuActive.isContributionActive) {active bg-gradient-primary} " href="@routes.HomeController.contributions(0)">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">table_view</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Contributions</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if(menuActive.isNotificationActive) {active bg-gradient-primary} " href="@routes.HomeController.notifications">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">notifications</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Notifications</span>
+                    <span class="ms-2 badge badge-sm badge-circle badge-danger border border-white border-2">4</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if(menuActive.isProfileActive) {active bg-gradient-primary}" href="@routes.HomeController.profile">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">person</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+            @if(userRole == UserRole.STUDIO_MANAGER) {
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Manager Panel</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white @if(menuActive.isStudioUserActive) {active bg-gradient-primary}" href="@routes.ManagerController.studioUsers("0")">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">group</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Studio Users</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</aside>
